@@ -16,10 +16,12 @@ type Query {
     ): User @find
 
     "List multiple users."
-    users(
+    users(bh
         "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
         name: String @where(operator: "like")
     ): [User!]! @paginate(defaultCount: 10)
+
+    posts: [Post!]! @paginate(defaultCount: 10) @orderBy()
 }
 
 "Account of a person who utilizes this application."
@@ -43,4 +45,18 @@ type User {
     updated_at: DateTime!
 
     posts: [Post!]! @hasMany # array is not null and each entry is not
+}
+
+type Post {
+    id: ID!
+
+    title: String!
+
+    desc: Text!
+
+    user: User! @belongsTo
+
+    created_at: DateTime!
+
+    updated_at: DateTime!
 }
