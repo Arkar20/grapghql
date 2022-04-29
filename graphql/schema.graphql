@@ -16,12 +16,19 @@ type Query {
     ): User @find
 
     "List multiple users."
-    users(bh
+    users(
         "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
         name: String @where(operator: "like")
     ): [User!]! @paginate(defaultCount: 10)
 
-    posts: [Post!]! @paginate(defaultCount: 10) @orderBy()
+    posts: [Post!]! @paginate(defaultCount: 10)
+}
+
+# mutation or creating actions
+type Mutation {
+    createPost(user_id: ID!, title: String!, desc: String!): Post @create
+    updatePost(id: ID!, title: String!, desc: String!): Post @update
+    deletePost(id: ID!): Post @delete
 }
 
 "Account of a person who utilizes this application."
@@ -52,7 +59,7 @@ type Post {
 
     title: String!
 
-    desc: Text!
+    desc: String!
 
     user: User! @belongsTo
 
